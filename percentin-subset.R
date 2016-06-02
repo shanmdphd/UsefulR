@@ -9,7 +9,6 @@ B
 summary(B)
 
 # sapply single function (NOT RECOMMENDED)
-sapply(A,FUN=c("mean","median"))
 sapply(A[,2:3], median, na.rm = TRUE)
 sapply(A[,2:3], mean, na.rm = TRUE)
 
