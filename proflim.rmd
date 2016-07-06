@@ -1,0 +1,891 @@
+# R workshop  
+# 2014 대한임상약리학회 추계학술대회  
+## 임 형 석
+
+```{r}
+# R은 대문자, 소문자를 구분한다.
+# #이 처음에 있는 행은 R이 실행하지 않는다.
+# R 함수는 "()", 데이터는 "[]" 사용.
+# R 자체의 help의 설명을 잘 활용해야 한다.
+ # help(matplot)
+ # ?(matplot)
+ # args(matplot) : 함수의 간단한 활용방법
+
+# Required library in this document
+# library(sas7bdat)
+# library(splines)
+# library(survival)
+
+#################################################
+##---------------------------------------------##
+##               Data Types                    ##
+##---------------------------------------------##
+#################################################
+
+#################################################
+##                  Data Types                 ##
+#################################################
+
+############### Data Types 종류 #################
+
+3         # numeric
+"3"       # character
+"UseR!"   # character
+1+3i      # complex
+1>3       # logical
+
+
+############### Data Types 보기 #################
+
+mode(3)
+mode("3")
+mode("UseR!")
+mode(1+3i)
+mode(1>3)
+
+
+#################################################
+##---------------------------------------------##
+##                Data Structure               ##
+##---------------------------------------------##
+#################################################
+
+# Vector: uni-mode
+# Matrix: uni-mode
+# Array: uni-mode
+
+# List: multi-mode
+# Data frame: multi-mode
+
+
+#################################################
+##                   Vector                    ##
+#################################################
+
+################ Vector 만들기 ##################
+
+c(1,2,3,4)
+c("a","b","c")
+c(1,2,"a")      # 숫자도 character로 변환됨.
+
+
+seq(1, 6)
+seq(1, 6, by=2)
+seq(1, 15, by = pi)
+seq(1, 6, length=8)
+seq(3, -3)
+1:6
+seq(6)
+
+
+rep("CONTROL",3)
+rep(1:3, 3)
+rep(1:3, c(3,3,2))
+rep(1:3, 2:4)
+rep(1:3, rep(3,3))
+rep(1:3, each=3)
+
+
+################### Assign ######################
+
+# <- or =
+
+vec1 <- c(1,2,3,4)
+vec1
+vec2 = c(5,6,7,8)
+vec2
+vec <- c(vec1, vec2)
+vec
+
+############## Vector Attribute #################
+
+mode(vec)
+head(vec)
+length(vec)
+str(vec)
+summary(vec)
+names(vec) <- c("a","b","c","d","e","f","g","h") # names function으로 이름 assign
+vec
+
+################# Subscripting ##################
+
+vec[1]              # Positive: indices of elements to return
+vec[6]
+vec[c(1,6)]
+vec[5:length(vec)]
+vec[-1]             # Negative: indices of elements to omit
+vec[-seq(1:4)]
+vec[-length(vec)]
+vec[]               # Blank: return all elements
+letters             # internal data in R
+letters[1:3]
+
+
+################ Logical value ##################
+
+vec <- c(6,4,5,3,9,7,1,8,2,10)   # overwrite vec vector
+names(vec) <- letters[1:length(vec)]
+vec > 6
+vec[vec > 6]                     # only "TRUE" values
+vec[vec <= 4]
+vec[vec == 5]                    # equal
+vec[vec != 5]                    # not equal
+vec[vec > 2 & vec < 8]           # and
+vec[vec <= 2 | vec >=7]          # or
+vec["a"]                         # subscript by "name"
+vec[c("a","f")]
+
+
+
+
+#################################################
+##                   Matrix                    ##
+#################################################
+
+################ Matrix 만들기 ##################
+
+matrix(1:9, nrow=3, ncol=3)
+matrix(1:9, nrow=3)                   # No need for ncol
+args(matrix)
+matrix(1:9, nrow=3, byrow=T)          # reading by row
+matrix(5, nrow=3, ncol=3)             # repetition of 5
+
+
+rbind(1:3,4:6,7:9)                    # row bind
+cbind(1:3,4:6,7:9)                    # column bind
+cbind(1:3,4:6,1)                      # repetition of 1
+
+
+############## Matrix Attribute #################
+
+mat <- cbind(1:5,c(66,68,72,89,68),c(32,39,24,28,20))
+nrow(mat)
+ncol(mat)
+dim(mat)
+length(mat)       # total No. of elements
+mode(mat)
+class(mat)
+dimnames(mat)
+dimnames(mat) <- list(c("a","b","c","d","e"),c("ID","WT","AGE"))
+
+
+################# Subscripting ##################
+
+mat[1,2]                # 1st row, 2nd column
+mat[1,]                 # 1st row, all columns
+mat[c(2,4),]            # 2nd and 4th row, all columns
+mat[,3]                 # all rows, 3rd column
+mat[-1,-2]              # all but the 1st row, all but the 2nd column
+mat[]                   # all columns, all rows
+mat["b","ID"]
+mat[,c("ID","WT")]      # subset by names
+
+
+################ Logical value ##################
+
+mat[,2] > 70
+mat[mat[,2] > 70,]
+mat[mat[,"WT"] > 70,][,"ID"]
+mat[mat[,"WT"] > 70,][,"ID", drop=F]    # matrix 유지
+
+
+
+
+#################################################
+##                   Array                     ##
+#################################################
+
+################ Array 만들기 ###################
+
+arr <- array(1:12,c(2,3,2))
+arr
+
+arr1 <- array(1:36,c(2,3,2,3))
+arr1
+
+
+############## Array Attribute ##################
+
+length(arr)                     # total number of arrays
+dim(arr)
+mode(arr)
+class(arr)
+
+
+
+#################################################
+##                    List                     ##
+#################################################
+
+# 여러 종류의 데이터를 담는 유용한 그릇
+
+################ List 만들기 ##################
+
+lst <- list(vec, mat, LETTERS[1:10])
+lst
+lst <- list(X=vec, Y=mat, Z=LETTERS[1:10])
+lst
+
+
+############## List Attribute #################
+
+length(lst)
+names(lst)
+names(lst)[2]
+str(lst)
+mode(lst)
+class(lst)
+
+
+################# Subscripting ##################
+
+lst[1]
+lst[2]
+lst[3]
+lst$X
+lst$Y
+lst$Z             # matrix
+class(lst$Y)
+lst$Y[,1]
+lst$Y[,1, drop=F]
+lst$Y[,c("ID","AGE")]
+
+
+############# Addition of Elements ##############
+
+lst$A <- rep("A",5)               # vector 추가
+lst
+lst$ALPHA <- matrix(letters[1:9], nrow=3, ncol=3)  # matrix 추가
+lst
+
+
+
+#################################################
+##                Data Frame                   ##
+#################################################
+
+# 각 구성요소가 이름을 지니고 있으며 동일한 길이의 벡터로 구성된 리스트
+
+############## Data frame 만들기 ################
+
+df1 <- data.frame(1:5, c(66,48,72,89,55), c(32,39,24,28,20), c(1,2,1,1,2))
+df1
+names(df1) <- LETTERS[1:4]
+df1 <- data.frame(ID=1:5, WT=c(66,48,72,89,55), AGE=c(32,39,24,28,20), SEX=c(1,2,1,1,2))
+df1
+df2 <- as.data.frame(mat)         # data.frame from other data structure
+df2
+
+############ Data Frame Attribute ###############
+
+head(df1)
+head(df1, 3)
+length(df1)
+names(df1)
+colnames(df1)
+rownames(df1)
+names(df1)[3]
+
+
+################# Subscripting ##################
+
+df1$ID                    # extract "ID" column, vector
+df1[,1]
+df1[df1$ID <= 3,]         # All the data of the first 3 subjects
+df1$AGE[df1$ID <= 3]      # Age data of the first 3 subjects
+
+attach(df1)               # name으로 자료에 access 가능하게 함
+AGE[ID < 3]
+detach(df1)               # attach 해제
+
+subset(df1, AGE>=25)      # subset function
+subset(df1, AGE>=25, select = c(ID, AGE, SEX))
+subset(df1, AGE>=25, c(ID, WT, SEX))
+subset(df1, AGE>=25, -AGE)
+
+
+############# Addition of Elements ##############
+
+df1$HT <- c(180,165,175,172,163)
+df1
+
+
+#################################################
+##            Basic Calculations               ##
+#################################################
+
+2+2
+4-2
+2*3
+6/3
+10^3
+sqrt(4)
+abs(-5)
+log(exp(1))
+log(10, 10)
+exp(1)
+
+
+#################################################
+##          Vectorized Calculations            ##
+#################################################
+
+a <- 1:5
+a + 2
+a - 2
+a*3
+a/5
+a^3
+sqrt(a)
+abs(-a)
+log(exp(a))
+log(a, 10)
+exp(a)
+
+mat-2
+
+df1-3
+
+
+conc1 <- c(0,10,20,40,30,20,10)
+conc2 <- c(0,20,40,80,60,40,20)
+conc <- conc1 + conc2
+conc
+conc <- conc1^2              # Overwrite
+conc
+time <- c(0,0.5,1,2,4,8,12,24)
+p    <- c(dose=50, Cl=0.5, V=10)
+conc <- 50/0.5*exp(-0.5/10*time)
+conc
+conc <- p[1]/p[2]*exp(-p[2]/p[3]*time)
+conc
+conc <- p["dose"]/p["Cl"]*exp(-p["Cl"]/p["V"]*time)
+
+
+
+#################################################
+##---------------------------------------------##
+##                  R 함수들                   ##
+##---------------------------------------------##
+#################################################
+
+#################################################
+##          기본적 숫자 관련 함수들            ##
+#################################################
+
+mean(vec)
+median(vec)
+min(vec)
+max(vec)
+range(vec)
+sd(vec)
+var(vec)
+sum(vec)
+length(vec)
+quantile(vec,0.5)
+quantile(vec,0.95)
+pi
+round(pi,2)
+sqrt(100)
+order(c(3,2,5,10,10))
+
+exp(sum(log(vec)) / length(vec)) # Geometric mean
+
+
+#################################################
+##      Random number 및 분포 관련 함수들      ##
+#################################################
+
+rnorm(100)
+args(rnorm)
+rnorm(100, 10, 2)
+
+qnorm(0.95)             # 95% quantiles in standard normal distribution
+qnorm(0.975)
+args(qnorm)
+qnorm(0.95, 10, 5)      # 95% quantiles of normal distribution (mean=10, standard deviation=5)
+
+
+runif(5)                # extract 5 random samples from uniform distribution [0,1]
+args(runif)
+runif(5, 3, 10)
+
+
+qchisq(0.95,1)          # 95% quantiles of chi square distribution (probaiilty=95%, degree of freedom=1)
+args(qchisq)
+qchisq(0.95,2)
+qchisq(0.99,1)
+qchisq(0.999,1)
+
+
+sample(vec, 5)          # 5 random sampling from vec without replacement
+args(sample)
+sample(vec, 5)          # different values from the previous one
+
+set.seed(20141113)
+sample(vec, 5)
+set.seed(20141113)
+sample(vec, 5)
+
+sample(vec, 15, replace=T) # 10 random sampling from vec without replacement
+
+
+#################################################
+##                 결측값 처리                 ##
+#################################################
+
+vec.m <- c(0.2,0.8,5,30,15,4,1.2,0.3)
+vec.m[vec.m < 0.5]   <- NA           # NA, missing value
+mean(vec.m)
+help(mean)
+mean(vec.m, na.rm=T)
+is.na(vec.m)
+!is.na(vec.m)
+vec.m[!is.na(vec.m)]
+mean(vec.m[!is.na(vec.m)])
+n.vec.m <- replace(vec.m, is.na(vec.m), 9999)
+n.vec.m
+n.vec.m2 <- replace(vec.m, is.na(vec.m), median(vec.m[!is.na(vec.m)]))
+n.vec.m2
+#n.vec.m3 <- na.omit(vec.m)
+mean(na.omit(vec.m))
+
+
+#################################################
+##              문자 관련 함수들               ##
+#################################################
+
+nchar("clinical pharmacology")  # 문자의 숫자를 센다 (space도 count)
+
+txt <- c("arm","foot","lefroo", "bafoobar")
+grep("foo", txt)                # 문자의 패턴을 파악하여 위치를 알려준다.
+
+paste("101",".ctl", sep="")     # Concatenate vectors after converting to character
+paste(1:5)
+paste(mean(1:100)," and ", round(sd(1:100),2), sep="")
+
+
+
+#################################################
+##             자신의 함수 만들기              ##
+#################################################
+
+myfun <- function(x,y) {(x + y)^2}
+myfun(2,5)
+myfun(rep(2,10),1:10)
+myfun(2,1:10)
+myfun2 <- function(x,y) {
+  z1 <- (x + y)^2
+  z2 <- (x - y)^2
+  return(z1+z2)
+}
+myfun2(2,5)
+myfun3 <- function(x,y) {
+  z1 <- (x + y)^2
+  z2 <- (x - y)^2
+  return(c(z1, z2))
+}
+myfun3(2,5)
+myfun4 <- function(x,y=0) {sin(x)+cos(y)}
+myfun4(0)
+myfun4(0,1)
+
+
+#################################################
+##               For loop 구문                 ##
+#################################################
+
+id.vec <- NULL
+for(i in 1:5) {
+  id.vec[i] <- paste("ID","=",i, sep="")
+}
+
+id.vec
+
+
+#################################################
+##                 apply 함수                  ##
+#################################################
+
+# 복잡한 벡터 계산을 가능하게 함
+# 행렬, 데이터 프레임, 배열 등을 대상으로 함수 적용
+
+############## apply 함수 활용법 ################
+
+args(apply) 
+
+mat
+apply(mat,2,mean)               #  column 별로
+apply(mat,1,mean)
+apply(mat,2,median)
+apply(mat,2,quantile,0.5)
+
+
+df1
+apply(df1,2,min)
+
+arr
+apply(arr,1,max)
+apply(arr,2,max)
+apply(arr,3,max)
+
+myfun5 <- function(x) {x-mean(x)}
+apply(mat[,-1],2,myfun5)
+
+
+############# lapply 함수 활용법 ################
+
+# list apply
+
+lst
+lapply(lst,length)
+
+df1
+lapply(df1,mean)
+
+
+############# sapply 함수 활용법 ################
+
+# 기본적으로 lapply와 같으나 결과를 정리하여 출력해줌
+
+x <- list(a = 1:10, beta = exp(-3:3), logic = c(T,F,F,T))
+lapply(x, quantile)
+sapply(x, quantile)
+sapp <- sapply(x, quantile)
+class(sapp)
+
+sapply(df1,mean)
+
+
+
+############# tapply 함수 활용법 ################
+
+# apply 함수를 변수별로 적용
+
+head(df1)
+tapply(df1$WT, df1$SEX, mean)
+
+
+
+#################################################
+##---------------------------------------------##
+##     데이터 다루기 (Data Manipulation)       ##
+##---------------------------------------------##
+#################################################
+
+#################################################
+##              작업 폴더 설정                 ##
+#################################################
+
+setwd("/Users/Sungpil/GIT/UsefulR/R_HandsOn")
+getwd()
+
+
+#################################################
+##    데이터 읽어들이기(Importing datasets)    ##
+#################################################
+
+############### csv 파일 읽기 ###################
+
+d1 <- read.table("PK.csv",sep=",")    
+head(d1)
+d2 <- read.table("PK.csv",sep=",")
+d3 <- read.table("PK.csv",sep=",",header=T)
+d4 <- read.table("PK.csv",sep=",",skip=1)
+d5 <- read.csv("PK.csv")
+head(d5)
+d6 <- read.csv("PK1.csv")
+head(d6)
+class(d5$DV)  
+head(d5$DV)
+head(d6$DV)   # d6$DV contains both character "." and numbers 
+              # => automatically change into factors
+class(d6$DV)
+d7 <- read.csv("PK1.csv", stringsAsFactors=F)
+class(d7$DV)
+
+
+############### text 파일 읽기 ##################
+
+sim.dat <- read.table("PK_sim.txt")
+
+txt.d <- read.delim("101.txt", sep="\t")
+txt.d
+
+txt.d2 <- readLines("101.txt")  # Read some or all text lines from a connection
+txt.d2
+
+
+############## sas dataset 읽기 #################
+
+library(sas7bdat)               # load sas7bat package
+#require(sas7bdat)
+sas.dat <- read.sas7bdat("korea.sas7bdat")
+sas.dat
+
+
+############# rbind와 cbind 함수 ################
+
+head(d6)
+tail(d6)
+dim(d6)
+
+rb.d6 <- rbind(d6[d6$ID==1,], d6[d6$ID==24,])
+cb.d6 <- cbind(d6, d6)
+
+################# merge 함수 ####################
+
+d.demog <- read.csv("DEMOG.csv")
+pk.demog.d <- merge(d6, d.demog, by.x="ID", by.y="SUBJ")
+d.demog2 <- read.csv("DEMOG2.csv")
+pk.demog.d2 <- merge(d6, d.demog2)
+
+
+############### duplicated 함수 #################
+
+head(duplicated(pk.demog.d$ID))
+head(!duplicated(pk.demog.d$ID))
+
+i.pk <- pk.demog.d[!duplicated(pk.demog.d$ID),]  # 각 개인별 첫 데이터
+i.pk
+
+
+################# unique 함수 ###################
+
+u.id <- unique(pk.demog.d$ID)
+head(u.id)
+
+############## expand.grid 함수 #################
+
+sim.d <- expand.grid("ID"=u.id, "TIME"=seq(0, 48, length=249))
+head(sim.d)
+
+################# order 함수 ####################
+
+sim.d <- sim.d[order(sim.d$ID),]
+head(sim.d)
+tail(sim.d)
+
+#################### %in% #######################
+
+s.pk.demog.d <- pk.demog.d[pk.demog.d$ID %in% c(1,12),] 
+head(s.pk.demog.d, 25)
+
+
+#################################################
+##    테이터 내보내기 (Exporting datasets)     ##
+#################################################
+
+############## write.table 함수 #################
+
+write.table(pk.demog.d, file="pk.demog.d.csv", sep=",", row.names=FALSE)
+
+write.csv(pk.demog.d, file="pk.demog.d.csv", row.names=FALSE)
+
+
+#################################################
+##---------------------------------------------##
+##             Basic Statistics                ##
+##---------------------------------------------##
+#################################################
+
+################### t-test ######################
+
+set.seed(20141113)
+tt.d <- data.frame(Genotype=rep(1:2,each=10), AUC=c(rnorm(10,100,20), rnorm(10,200,20)))
+tt.result <- t.test(tt.d$AUC ~ tt.d$Genotype, var.equal=T)
+tt.result
+
+#################### ANOVA ######################
+
+set.seed(20141113)
+anova.d <- data.frame(Genotype=rep(1:3,each=10), AUC=c(rnorm(10,100,20), rnorm(10,110,20), rnorm(10,200,20)))
+anova.result <- aov(anova.d$AUC ~ anova.d$Genotype)
+summary(anova.result)
+
+
+################ K-M Analysis ###################
+
+surv.d <- read.csv("surv.csv")
+
+# OSC=0, death (event)
+# OSC=1, alive (right censoring)
+
+library(splines)
+library(survival)
+
+fit <- survfit(Surv(OS, 1-OSC) ~ 1, data=surv.d)
+fit
+summary(fit)
+plot(fit)
+
+
+#################################################
+##---------------------------------------------##
+##                  Graphics                   ##
+##---------------------------------------------##
+#################################################
+
+# 상위수준 그림 함수는 그림을 생성한다.
+# 하위수준 그림 함수는 기존의 그림에 그림을 추가한다.
+
+#################################################
+##             상위수준 그림 함수              ##
+#################################################
+
+############ 상위수준 그림 함수 예 ##############
+
+# histogram
+hist(d.demog$HT)
+
+# bar plot
+barplot(d.demog$HT)
+
+# Box-and-Whisker Plot
+boxplot(d.demog$WT ~ d.demog$SEX)
+
+# pie char
+drug.X.market <- c(0.12, 0.29, 0.32, 0.22, 0.11, 0.28)
+names(drug.X.market) <- c("South Korea","China","USA","Japan","Austria","EU")
+pie(drug.X.market)
+
+
+
+################## plot 함수 ####################
+
+# scatter plot
+
+plot(d5$TIME[d5$MDV==0],d5$DV[d5$MDV==0])
+
+
+################ matplot 함수 ###################
+
+# matrix와 column 사이의 그림
+
+pct.95 <- read.csv("pct95.csv")
+matplot(pct.95[,1], pct.95[,2:ncol(pct.95)], pch=1)
+
+## 상위수준 그림 함수의 주요 인자 (arguments) ###
+
+# main : 제목
+# xlab/ylab : x축 및 y축 레이블
+# xlim/ylim : x축 및 y축 범위
+# col : 색깔
+# lty : 선 모양
+# pch : 점 모양
+# cex : 그림 성분의 크기
+# lwd : 선 굵기
+# type : 그림 타입
+
+plot(d5$TIME[d5$MDV==0],d5$DV[d5$MDV==0], main="PK of Drug X"
+     , type="b", xlab="Time (h)", ylab="Concentration (ng/ml)"
+     , xlim=range(0,272), ylim=range(0,80), lty=2, pch=4
+     , col="violet", lwd=1.5, cex=0.8)
+#type="n"
+plot(d5$TIME[d5$MDV==0],d5$DV[d5$MDV==0], main="PK of Drug X"
+     , type="n", xlab="Time (h)", ylab="Concentration (ng/ml)"
+     , xlim=range(0,272), ylim=range(0,80), lty=2, pch=4
+     , col="violet", lwd=1.5, cex=0.8)
+hist(d.demog$HT, breaks=12, col = "orange", border = "darkblue"
+    , main="Histogram of Height", xlab="Height (cm)")
+
+
+#################################################
+##             하위수준 그림 함수              ##
+#################################################
+
+# points : 점추가
+# lines : 선 추가
+# abline : 기준선 추가
+# mtext : 텍스트 추가
+# legend : 설명(legend) 추가
+# polygon : polygon 추가
+
+
+############ 점, 선, 설명 추가 하기 #############
+
+plot(pct.95$TIME, pct.95$PCT50, main="PK of Drug X"
+     , type="l", xlab="Time (h)", ylab="Concentration (ng/ml)"
+     , ylim=range(0,80), lty=1, col="red", lwd=2)
+
+points(d5$TIME[d5$MDV==0],d5$DV[d5$MDV==0], pch = 16, cex=0.8)
+lines(pct.95$TIME, pct.95$PCT2.5, col="black", lwd=1)
+lines(pct.95$TIME, pct.95$PCT97.5, col="black", lwd=1)
+legend("topright", legend=c("Median", "95% PI")
+       , pch=c(16,16), col=c("red","black"))
+
+
+
+################# polygon 함수 ###################
+
+plot(c(1, 10), c(1, 6), type = "n")
+polygon(c(2,8,8,2), c(5,4,3,2), col="lightgreen")
+
+
+
+
+################ par 함수 활용####################
+
+par(mfrow=c(2,2))
+plot(c(1, 10), c(1, 6), type = "n")
+polygon(c(2,8,8,2), c(5,4,3,2), col="lightgreen")
+
+plot(c(1, 10), c(1, 6), type = "n")
+polygon(c(2,8,8,2), c(5,4,3,2), col="lightgreen")
+
+plot(pct.95$TIME, pct.95$PCT50, main="PK of Drug X"
+     , type="l", xlab="Time (h)", ylab="Concentration (ng/ml)"
+     , ylim=range(0,80), lty=1, col="red", lwd=2)
+points(d5$TIME[d5$MDV==0],d5$DV[d5$MDV==0], pch = 16, cex=0.8)
+lines(pct.95$TIME, pct.95$PCT2.5, col="black", lwd=1)
+lines(pct.95$TIME, pct.95$PCT97.5, col="black", lwd=1)
+legend("topright", legend=c("Median", "95% PI")
+       , pch=c(16,16), col=c("red","black"))
+
+plot(c(1, 10), c(1, 6), type = "n")
+polygon(c(2,8,8,2), c(5,4,3,2), col="lightgreen")
+
+
+
+############# Individual PK Plots ################
+
+par(mfrow=c(4,2), tck=0.02, oma=c(0,0,2,1))
+for(i in unique(d6$ID))
+ {
+ j <- d6$ID==i
+ plot(d6$TIME[j], d6$DV[j], xlab="Time, hour"
+      , ylab="nM", type="b", cex=1.2, col=4)
+ title(paste("ID #", i, sep=""))
+ }
+
+
+################ Scatter Plots ###################
+
+par(mfrow=c(1,1), tck=0.02, oma=c(0,0,2,1))
+plot(d6$TIME[j], d6$DV[j], xlab="Time, hour"
+  , ylab="nM", xlim=range(0,48), type="n", cex=1.2, col=4)
+ for(i in unique(d6$ID))
+ {
+  j <- d6$ID==i
+  lines(d6$TIME[j], d6$DV[j], lty=1, lwd=1, col=1)
+  }
+
+
+################# 그림 출력하기 ##################
+
+pdf("PK_Plot.pdf")
+
+plot(pct.95$TIME, pct.95$PCT50, main="PK of Drug X"
+     , type="l", xlab="Time (h)", ylab="Concentration (ng/ml)"
+     , ylim=range(0,80), lty=1, col="red", lwd=2)
+
+points(d5$TIME[d5$MDV==0],d5$DV[d5$MDV==0], pch = 16, cex=0.8)
+lines(pct.95$TIME, pct.95$PCT2.5, col="black", lwd=1)
+lines(pct.95$TIME, pct.95$PCT97.5, col="black", lwd=1)
+legend("topright", legend=c("Median", "95% PI")
+       , pch=c(16,16), col=c("red","black"))
+
+dev.off()
+
+#################################################
+```
