@@ -1,4 +1,4 @@
-# R Libraries for Equivalence Test
+# R Libraries for Equivalence Test #
 
 # Diletti E, Hauscheke D, Steinjans VW. Sample size determination for bioequivalence assessment by means of confidence intervals. Int J Clin Pharmacology, Therapy and Toxicology. 1992;29:S51-58
 # Chow SC, Liu JP. Design and Analysis of Bioavailability and Bioequivalence Study. 2nd ed. p158. 2000, Marcel Dekker Inc
