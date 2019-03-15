@@ -1,0 +1,12 @@
+
+```{r}
+library(tidyverse)
+
+b <-  0.0025
+d50 <- 1600
+
+tibble(d = 500:3000) %>% 
+  mutate(prob = 1 / (1+exp(-b*(d-d50)))) %>% 
+  ggplot(aes(d, prob)) +
+  geom_line()
+```
