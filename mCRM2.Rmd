@@ -1,0 +1,22 @@
+---
+output: html_notebook 
+---
+
+```{r}
+library(tidyverse)
+
+# mCRM
+
+b <-  0.0025
+d50 <- 1600
+
+tibble(d = 0:5000) %>% 
+  mutate(prob = 1 / (1+exp(-b*(d-d50)))) %>% 
+  ggplot(aes(d, prob)) +
+  geom_line() +
+  geom_vline(xintercept = d50, color = 'red') +
+  labs(x='Dose (mg)',
+       y='Probability')
+```
+
+

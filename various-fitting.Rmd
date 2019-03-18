@@ -1,0 +1,42 @@
+
+```{r}
+library(tidyverse)
+tibble(time = c(0, 15, 30, 60, 90, 120),
+       conc = c(0, 65, 65, 65, 75, 75)) %>% 
+  ggplot(aes(time, conc)) +
+  geom_line() +
+  geom_smooth(method='lm')
+
+
+x <- 1:10
+y <- jitter(x^2)
+
+DF <- data.frame(x, y)
+
+df <- tibble(x = c(1, 15, 30, 60, 90, 120),
+             y = c(1, 65, 65, 65, 75, 75)) 
+
+Indometh
+
+ggplot(df, aes(x = x, y = y)) + 
+  geom_point() +
+  geom_line() +
+  stat_smooth(method = 'lm', aes(colour = 'linear'), 
+              se = FALSE) +
+  stat_smooth(method = 'lm', formula = y ~ poly(x,2), aes(colour = 'polynomial'), 
+              se= FALSE) +
+  stat_smooth(method = 'nls', formula = y ~ a * log(x) +b, aes(colour = 'logarithmic'), 
+              se = FALSE, start = list(a=1,b=1))
+
+Indometh %>% head
+
+ggplot(Indometh, aes(x = time, y = conc, group = Subject)) + 
+  geom_point() +
+  geom_line() +
+  stat_smooth(method = 'lm', aes(colour = 'linear'), 
+              se = FALSE) +
+  stat_smooth(method = 'lm', formula = y ~ poly(x,2), aes(colour = 'polynomial'), 
+              se= FALSE) +
+  stat_smooth(method = 'nls', formula = y ~ a * log(x) +b, aes(colour = 'logarithmic'), 
+              se = FALSE, start = list(a=1,b=1))
+```
